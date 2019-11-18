@@ -3,6 +3,7 @@
 import React from "react";
 import {
   AppState,
+  Dimensions,
   FlatList,
   SectionList,
   View,
@@ -20,11 +21,12 @@ import { BlurView } from "expo-blur";
 
 import * as Icon from "@expo/vector-icons";
 
-import { Navigation, Dispatch } from "../types";
+import { Navigation, Dispatch } from "../apps/_current/types";
 import { connectActionSheet, SearchBar, FAB } from "../index.leckr.imports";
 
 import * as HeaderIconButton from "../expo-elements/ui.header.icon.button";
 
+const { width } = Dimensions.get("window");
 // internal
 
 export type Tools = {
@@ -464,14 +466,12 @@ class SwiftList extends React.Component<Props, State> {
       selected.length > 0 && actions?.length > 0 ? (
         <View>
           <FAB
-            backgroundColor={"#CCC"}
+            backgroundColor={"#008eff"}
             icon={"share"}
             IconFont={Icon.FontAwesome}
             iconColor={"#000"}
             onPress={() => {
-              const extraConfig = {
-                title: `With ${selected.length} selected...`
-              };
+              const title = `With ${selected.length} selected...`;
 
               const actionsAndCancel = actions;
               actionsAndCancel.push({
@@ -486,7 +486,8 @@ class SwiftList extends React.Component<Props, State> {
                 {
                   options: actionsAndCancel.map(option => option.title),
                   cancelButtonIndex: actionsAndCancel.length - 1,
-                  title: "Choose what you want to see"
+                  destructiveButtonIndex: actions.findIndex(a => a.destructive),
+                  title
                 },
                 indexAction
               );
@@ -534,7 +535,9 @@ class SwiftList extends React.Component<Props, State> {
             justifyContent: "space-between"
           }}
         >
-          <Text style={{ fontWeight: "bold" }}>{title.title}</Text>
+          <Text style={{ fontWeight: "bold" }} numberOfLines={1}>
+            {title.title}
+          </Text>
 
           {actions.length > 1 && (
             <TouchableOpacity
@@ -547,6 +550,9 @@ class SwiftList extends React.Component<Props, State> {
                     options: actions.map(option => option.title),
                     title: title.title,
                     cancelButtonIndex: actions.length - 1,
+                    destructiveButtonIndex: actions.findIndex(
+                      x => x.destructive
+                    ),
                     message: "Do something with " + title.title
                   },
                   indexAction
@@ -607,6 +613,10 @@ class SwiftList extends React.Component<Props, State> {
     }
   }
 
+  state = {
+    scrollY: 0
+  };
+
   /**
    * renders either a flatlist or sectionlist based on the data
    */
@@ -637,7 +647,12 @@ class SwiftList extends React.Component<Props, State> {
     return (
       <List
         {...props}
-        extraData={[selected.length, isEditing, search]}
+        extraData={[
+          selected.length,
+          isEditing,
+          search,
+          ...(props.extraData || [])
+        ]}
         keyExtractor={(item, index) => `${item.id}item${index}`}
         renderItem={props => this.renderRowOrNothing(props)}
         keyboardShouldPersistTaps={"handled"}
