@@ -254,57 +254,15 @@ export const getSection = ({
 };
 
 /**
- * 
- * 
- * 
- * #bug:
- *
- * (node:80147) MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 change listeners added. Use emitter.setMaxListeners() to increase limit
- *
- * #bug2
- * VirtualizedList: You have a large list that is slow to update - make sure your renderItem function renders components that follow React performance best practices like PureComponent, shouldComponentUpdate, etc. Object {
-  "contentLength": 2079,
-  "dt": 570,
-  "prevDt": 638,
-}
-
- * --------#idea Animated BlurView for when Searching or changing view or other §/filters--------------
- *
- * It's not important, but it's not that pretty when the search bar and categories are always visible.
- * With https://docs.expo.io/versions/latest/sdk/blur-view/ (see Animation example) we can build the same effect of getting the search bar of the iPhone homescreen (of newer iOS versions). This is epic!
- *
- * How does this not intervere with the scrollView and pull to refresh?
- * 1) Pull to refresh is not really important anyway and implemented badly in react native. Remove pull to refresh
- * 2) Somehow accurately measure swipe down on the view wrapper, but only do something with it if the childscrollview is on top when starting the movement already.
- *
- * Now that I think of it, this must be implemented before in react native using expo. Maybe I can find a script
- *
- * This is close! Can definitely be used.
- * https://blog.expo.io/implementation-complex-animation-in-react-native-by-example-search-bar-with-tab-view-and-collapsing-68bb43be2dcb
- *
- * #idea in the future, you could even do cool things when swiping a lot to the left or the right. Hide things there, or whatever.
- * 
- * 
- * #idea: Abstrahere contacts from this (strip contacts away and add them in a wrapper around this) because this is a very common pattern and can be used in other cases as well. The ux can be put inside leckr-inputs or expo-elements or so. It's applicable everywhere. However, it seems a bit quick to do this now already. I don't even know yet if this is going to be useful as a contact sectionlist component, and it's very tightly coupled with UI. It'll be an interesting thing to try, and I can probably learn a lot from it, but let's do it step by step, and keep this a ContactsSectionList
-
  * Responsibilities: Mostly typed UI. Doesn't know what to do. Just does it.
- * 
+ *
  * - show any contacts in any way, with or without sections
  * - Selection (if activated)
  * - Search `"pull", "show", "disable"`
- * - Pull to refresh
  * - Render (list)-headers and -footers
  * - Render given footer
-
+ * - pull to refresh
  * - Either select, show actions, or do action, when clicking on contact
- * #toRemember
- *
- * Seeing all props in the render and spreading them there to submethods can be a great way to see if a class can be broken up
- *
- * Unfortunately, IntelliSense doesn't understand types when given to functions. This is a big problem for this method, since this gives a huge overhead in boilerplate. Therefore, just keep them here (but don't use them).
- *
- * This isnt'perfect, #toSearch
- *    
  */
 
 @connectActionSheet
@@ -393,7 +351,6 @@ class SwiftList extends React.Component<Props, State> {
           <View
             style={{
               flexDirection: "row",
-              // alignItems: "space-between",
               justifyContent: "space-between"
             }}
           >
@@ -402,14 +359,12 @@ class SwiftList extends React.Component<Props, State> {
           <View
             style={{
               flexDirection: "row",
-              // alignItems: "space-between",
               justifyContent: "space-between",
               marginVertical: 10
             }}
           >
             {renderButtons("left")}
 
-            {/* #hooks for searchbar state?  */}
             <View style={{ flex: 1, marginHorizontal: 10 }}>
               {useSearch !== false && (
                 <SearchBar
@@ -442,7 +397,6 @@ class SwiftList extends React.Component<Props, State> {
           <View
             style={{
               flexDirection: "row",
-              // alignItems: "space-between",
               justifyContent: "space-between"
             }}
           >
@@ -612,10 +566,6 @@ class SwiftList extends React.Component<Props, State> {
       return this.searchItems(state.search, data);
     }
   }
-
-  state = {
-    scrollY: 0
-  };
 
   /**
    * renders either a flatlist or sectionlist based on the data
