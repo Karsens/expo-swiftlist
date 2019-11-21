@@ -3,7 +3,6 @@
 import React from "react";
 import {
   AppState,
-  Dimensions,
   FlatList,
   SectionList,
   View,
@@ -21,17 +20,18 @@ import { BlurView } from "expo-blur";
 
 import * as Icon from "@expo/vector-icons";
 
-import { Navigation, Dispatch } from "../apps/_current/types";
-import { connectActionSheet, SearchBar, FAB } from "../index.leckr.imports";
+import SearchBar from "./pure.search.bar";
 
-import * as HeaderIconButton from "../expo-elements/ui.header.icon.button";
+import { connectActionSheet } from "@expo/react-native-action-sheet";
 
-const { width } = Dimensions.get("window");
+import FAB from "./pure.floating.action.button";
+import * as HeaderIconButton from "./ui.header.icon.button";
+
 // internal
 
 export type Tools = {
-  navigation: Navigation,
-  dispatch: Dispatch
+  navigation: any,
+  dispatch: any
 };
 
 type SectionActionsGetter = (
@@ -410,7 +410,7 @@ class SwiftList extends React.Component<Props, State> {
             {renderButtons("left")}
 
             {/* #hooks for searchbar state?  */}
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, marginHorizontal: 10 }}>
               {useSearch !== false && (
                 <SearchBar
                   reference={ref => (this.searchBar = ref)}
