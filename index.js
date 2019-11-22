@@ -78,9 +78,6 @@ export type Action = {
   title: string
 };
 
-/**
- * #toRemember: A JSDoc for a prop is always useful because sometimes you don't know if a prop exists, so just write something.
- */
 export type Props = {
   /**
    * won't be rendered
@@ -195,74 +192,17 @@ export type State = {
 };
 
 /**
- * gets a section based on some things
- */
-export const getSection = ({
-  items,
-  field,
-  value,
-  filter,
-  title,
-  sectionActions,
-  returnIfEmpty
-}: {
-  /**
-   * all items in the whole list
-   */
-  items: any[],
-  /**
-   * the field in the item to check on. Required
-   */
-  field: string,
-  /**
-   * the value of that field (needed if no filter or if there are actions)
-   */
-  value?: any,
-  /**
-   * sometimes there is no exact field, then you can put a filter here
-   */
-  filter?: (item: any) => boolean,
-  /**
-   * title appearing in as sectiontitle and maybe more places
-   */
-  title: string,
-
-  /**
-   * Which actions are possible on this section? callback
-   *
-   * NB: I DON"T KNOW THE TYPE !!!111!
-   */
-  sectionActions: SectionActionsGetter,
-
-  /**
-   * return if empty or not
-   */
-  returnIfEmpty: (state: State) => boolean
-}): Section => {
-  const aFilter = filter || (i => i[field] === value);
-  const data = items.filter(aFilter);
-  return {
-    title: {
-      title,
-      field,
-      value,
-      sectionActions,
-      returnIfEmpty
-    },
-    data
-  };
-};
-
-/**
  * Responsibilities: Mostly typed UI. Doesn't know what to do. Just does it.
  *
- * - show any contacts in any way, with or without sections
+ * - show any data list in any way, with or without sections
  * - Selection (if activated)
- * - Search `"pull", "show", "disable"`
+ * - Search
  * - Render (list)-headers and -footers
  * - Render given footer
  * - pull to refresh
- * - Either select, show actions, or do action, when clicking on contact
+ * - Either select, show actions, or do action, when clicking on item
+ * - Selection actions
+ * - Section actions
  */
 
 @connectActionSheet
@@ -720,9 +660,13 @@ class SwiftList extends React.Component<Props, State> {
   }
 
   render() {
-    const { hideStatusBar, style, hasHeader } = this.props;
+    const { data, hideStatusBar, style, hasHeader } = this.props;
     const { isSearching, search } = this.state;
 
+    if (!data) {
+      console.warn("You need to provide data");
+      return <View />;
+    }
     return (
       <View
         style={[
