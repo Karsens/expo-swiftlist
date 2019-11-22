@@ -54,8 +54,7 @@ sectionData: Object[]
 | onPress | () => void |
 | title   | string     |
 
-```
-
+```js
 export type Props = {
   /**
    * won't be rendered
@@ -168,5 +167,4 @@ export type State = {
   selected: Object[],
   isRefreshing: boolean
 };
-
 ```
