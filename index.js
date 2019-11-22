@@ -162,6 +162,11 @@ export type Props = {
   itemActions: (item: Object) => Action[],
 
   /**
+   * do one thing based on item. can be used in combination with itemActions
+   */
+  itemOnPress: (item: Object) => void,
+
+  /**
    * callback that retreives actions from parent based on selection. this in turn renders FAB or something else, depending on optional parameter or platform default
    */
   selectionActions: (selection: Object[]) => Action[],
@@ -487,7 +492,7 @@ class SwiftList extends React.Component<Props, State> {
    */
   getData() {
     const {
-      props: { data },
+      props: { data, useSearch },
       state
     } = this;
 
@@ -495,7 +500,8 @@ class SwiftList extends React.Component<Props, State> {
       return data
         .map(({ title, data }) => ({
           title,
-          data: this.searchItems(state.search, data)
+          data:
+            useSearch !== false ? this.searchItems(state.search, data) : data
         }))
         .filter(({ title, data }: Section) => {
           const hasItems = data.length > 0;
@@ -503,7 +509,7 @@ class SwiftList extends React.Component<Props, State> {
           return shouldShow;
         });
     } else {
-      return this.searchItems(state.search, data);
+      return useSearch !== false ? this.searchItems(state.search, data) : data;
     }
   }
 
@@ -608,6 +614,7 @@ class SwiftList extends React.Component<Props, State> {
     const {
       showActionSheetWithOptions,
       itemActions,
+      itemOnPress,
       getTitle,
       getSubtitle
     } = this.props;
@@ -615,6 +622,8 @@ class SwiftList extends React.Component<Props, State> {
     const { isEditing } = this.state;
 
     const actions: Action[] = itemActions?.(item) || [];
+
+    const moreActions = actions.length > 1;
 
     actions.push({
       title: "Select",
@@ -626,11 +635,8 @@ class SwiftList extends React.Component<Props, State> {
 
     actions.push({ title: "Cancel", cancel: true });
 
-    const moreActions = actions.length > 1;
-    const oneAction = actions.length === 1;
-
     const indexAction = index => actions[index]?.onPress?.();
-    const userAction = () => {
+    const itemAction = () => {
       moreActions &&
         showActionSheetWithOptions(
           {
@@ -641,7 +647,7 @@ class SwiftList extends React.Component<Props, State> {
           },
           indexAction
         );
-      oneAction && actions[0].onPress();
+      itemOnPress?.(item);
     };
 
     return (
@@ -651,7 +657,7 @@ class SwiftList extends React.Component<Props, State> {
             this.setState({ isEditing: true });
             this.switchSelection(item);
           }}
-          onPress={isEditing ? () => this.switchSelection(item) : userAction}
+          onPress={isEditing ? () => this.switchSelection(item) : itemAction}
         >
           {this.props.renderItem({ item, index })}
         </TouchableOpacity>
@@ -660,13 +666,9 @@ class SwiftList extends React.Component<Props, State> {
   }
 
   render() {
-    const { data, hideStatusBar, style, hasHeader } = this.props;
+    const { hideStatusBar, style, hasHeader } = this.props;
     const { isSearching, search } = this.state;
 
-    if (!data) {
-      console.warn("You need to provide data");
-      return <View />;
-    }
     return (
       <View
         style={[

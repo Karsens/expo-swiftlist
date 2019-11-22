@@ -14,9 +14,21 @@ SwiftList is a component that makes it possible to separate actions (Controller)
 
 # Usage
 
-```
-coming here
-```
+````
+<SwiftList
+  data={sectionArray}
+  renderItem={({ item }) => <Text>{item.firstName}</Text>}
+  getSearchableString={item => item.firstName + ` ` + item.lastName}
+  itemActions={item => [
+    {
+      index: 0,
+      onPress: () => console.log("item", item.firstName),
+      title: ""
+    }
+  ]}
+  />
+
+        ```
 
 # API
 
@@ -27,13 +39,15 @@ coming here
 | navigation |
 | dispatch   |
 
-```
+````
+
 type SectionActionsGetter = (
 title: SectionTitle,
 tools: Tools,
 sectionData: Object[]
 ) => Action[];
-```
+
+````
 
 | SectionTitle: field | type                                           | description                                                                  |
 | ------------------- | ---------------------------------------------- | ---------------------------------------------------------------------------- |
@@ -139,6 +153,11 @@ export type Props = {
   itemActions: (item: Object) => Action[],
 
   /**
+   * do one thing based on item. can be used in combination with itemActions
+   */
+  itemOnPress: (item: Object) => void,
+
+  /**
    * callback that retreives actions from parent based on selection. this in turn renders FAB or something else, depending on optional parameter or platform default
    */
   selectionActions: (selection: Object[]) => Action[],
@@ -167,4 +186,4 @@ export type State = {
   selected: Object[],
   isRefreshing: boolean
 };
-```
+````
