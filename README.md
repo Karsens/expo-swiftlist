@@ -14,7 +14,7 @@ SwiftList is a component that makes it possible to separate actions (Controller)
 
 # Usage
 
-````
+```jsx
 <SwiftList
   data={sectionArray}
   renderItem={({ item }) => <Text>{item.firstName}</Text>}
@@ -26,9 +26,8 @@ SwiftList is a component that makes it possible to separate actions (Controller)
       title: ""
     }
   ]}
-  />
-
-        ```
+/>
+```
 
 # API
 
@@ -39,7 +38,7 @@ SwiftList is a component that makes it possible to separate actions (Controller)
 | navigation |
 | dispatch   |
 
-````
+```
 
 type SectionActionsGetter = (
 title: SectionTitle,
@@ -47,7 +46,7 @@ tools: Tools,
 sectionData: Object[]
 ) => Action[];
 
-````
+```
 
 | SectionTitle: field | type                                           | description                                                                  |
 | ------------------- | ---------------------------------------------- | ---------------------------------------------------------------------------- |
@@ -186,4 +185,4 @@ export type State = {
   selected: Object[],
   isRefreshing: boolean
 };
-````
+```
