@@ -19,10 +19,9 @@ import KeyboardSpacer from "react-native-keyboard-spacer";
 import { BlurView } from "expo-blur";
 
 import * as Icon from "@expo/vector-icons";
+import { connectActionSheet } from "@expo/react-native-action-sheet";
 
 import SearchBar from "./pure.search.bar";
-
-import { connectActionSheet } from "@expo/react-native-action-sheet";
 
 import FAB from "./pure.floating.action.button";
 import * as HeaderIconButton from "./ui.header.icon.button";
