@@ -1,6 +1,6 @@
 {
   "name": "expo-swiftlist",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "SwiftList is a component that makes it possible to separate actions (Controller) from UI/UX (View) for large (section) lists with search, selections and actions",
   "main": "index.js",
   "repository": "git@github.com:EAT-CODE-KITE-REPEAT/expo-swiftlist.git",
