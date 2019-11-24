@@ -1,0 +1,19 @@
+{
+  "name": "expo-swiftlist",
+  "version": "1.0.1",
+  "description": "SwiftList is a component that makes it possible to separate actions (Controller) from UI/UX (View) for large (section) lists with search, selections and actions",
+  "main": "index.js",
+  "repository": "git@github.com:EAT-CODE-KITE-REPEAT/expo-swiftlist.git",
+  "author": "<wijnand@leckr.io>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "expo-blur": "^7.0.0",
+    "react-native-iphone-x-helper": "^1.2.1",
+    "react-native-keyboard-spacer": "^0.4.1"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  }
+}
