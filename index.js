@@ -11,7 +11,6 @@ import {
   StatusBar
 } from "react-native";
 import { isIphoneX } from "react-native-iphone-x-helper";
-
 import KeyboardSpacer from "react-native-keyboard-spacer";
 import * as Icon from "@expo/vector-icons";
 import { connectActionSheet } from "@expo/react-native-action-sheet";

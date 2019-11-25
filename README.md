@@ -14,6 +14,8 @@ SwiftList is a component that makes it possible to separate actions (Controller)
 
 # Usage
 
+1.
+
 ```jsx
 <SwiftList
   data={sectionArray}
@@ -26,7 +28,24 @@ SwiftList is a component that makes it possible to separate actions (Controller)
       title: ""
     }
   ]}
+  //more props here
 />
+```
+
+2. Wrap your app in [ActionSheetProvider](https://github.com/expo/react-native-action-sheet)
+
+```jsx
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
+
+class AppContainer extends React.Component {
+  render() {
+    return (
+      <ActionSheetProvider>
+        <ConnectedApp />
+      </ActionSheetProvider>
+    );
+  }
+}
 ```
 
 # API
