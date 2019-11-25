@@ -13,12 +13,11 @@ import {
 import { isIphoneX } from "react-native-iphone-x-helper";
 
 import KeyboardSpacer from "react-native-keyboard-spacer";
-import BlurViewWrapper from "./animated.blur.view";
 import * as Icon from "@expo/vector-icons";
 import { connectActionSheet } from "@expo/react-native-action-sheet";
 
 import SearchBar from "./pure.search.bar";
-
+import BlurViewWrapper from "./animated.blur.view";
 import FAB from "./pure.floating.action.button";
 import * as HeaderIconButton from "./ui.header.icon.button";
 
