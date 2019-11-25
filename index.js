@@ -8,16 +8,12 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StatusBar,
-  Animated,
-  StyleSheet,
-  TouchableWithoutFeedback
+  StatusBar
 } from "react-native";
 import { isIphoneX } from "react-native-iphone-x-helper";
 
 import KeyboardSpacer from "react-native-keyboard-spacer";
-import { BlurView } from "expo-blur";
-
+import BlurViewWrapper from "./animated.blur.view";
 import * as Icon from "@expo/vector-icons";
 import { connectActionSheet } from "@expo/react-native-action-sheet";
 
@@ -689,50 +685,6 @@ class SwiftList extends React.Component<Props, State> {
         </BlurViewWrapper>
 
         {this.renderFooter()}
-      </View>
-    );
-  }
-}
-
-const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
-
-const FADE_MS = 500;
-//leckr
-class BlurViewWrapper extends React.Component {
-  state = {
-    intensity: new Animated.Value(0)
-  };
-
-  componentDidUpdate() {
-    const { slowBlur } = this.props;
-    let { intensity } = this.state;
-
-    if (slowBlur) {
-      Animated.timing(intensity, { duration: FADE_MS, toValue: 90 }).start(
-        () => {
-          //niks erna
-        }
-      );
-    } else {
-      Animated.timing(intensity, { duration: FADE_MS, toValue: 0 }).start();
-      //rustahhg
-    }
-  }
-
-  render() {
-    const { children, slowBlur, onStopBlur } = this.props;
-    return (
-      <View style={{ flex: 1 }}>
-        {children}
-        {slowBlur && (
-          <TouchableWithoutFeedback onPress={() => onStopBlur()}>
-            <AnimatedBlurView
-              tint="light"
-              intensity={this.state.intensity}
-              style={StyleSheet.absoluteFill}
-            />
-          </TouchableWithoutFeedback>
-        )}
       </View>
     );
   }
